@@ -68,7 +68,7 @@ Take mapprotocol/compass as an example:
 
   vim enclave.json
   ```
-  Reference configure.example.json in this repo to write your enclave.json file
+  Reference enclave.example.json in this repo to write your enclave.json file
 - Run
   ```shell
   # Sign the executable target first
