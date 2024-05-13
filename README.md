@@ -76,6 +76,8 @@ Take mapprotocol/compass as an example:
 
   teenettoolkit sign compass-oracle
 
-  teenettoolkit run compass-oracle maintainer --blockstore ../block-eth-map --config ../config.json
+  cd ..
+
+  teenettoolkit run ./build/compass-oracle maintainer --blockstore ./block-eth-map --config ./config.json --keystorePath ./key.json
   ``` 
 
