@@ -11,28 +11,71 @@ Only ***Balanced-bx3d*** and ***Compute-cx3d*** virtual servers support Intel SG
 Only ***M6ce*** instance supports Intel SGX. For more information, check: https://www.tencentcloud.com/zh/document/product/213/45510   
 
 ## Install ToolKit
+### Install via docker
+- Git clone this repo  
+  ```shell
+  git clone https://github.com/TEENet-io/ToolKit-packages.git
+  ```
+- Build image
+  ```shell
+  cd ToolKit-packages
 
-## Adaption
-```shell
-git clone https://github.com/mapprotocol/compass.git
+  docker build -t teenet-toolkit:latest -f Dockerfile.TEENetToolKit .
+  ```
+## Build & Run Program inside TEE via TEENet ToolKit
+Take mapprotocol/compass as an example:   
+### Adaption
+- Run docker image as container
+  ```shell
+  docker run -it --device /dev/sgx_enclave:/dev/sgx_enclave --device /dev/sgx_provision:/dev/sgx_provision teenet-toolkit:latest
+  ```
+- Git clone mapprotocol/compass
+  ```shell
+  git clone https://github.com/mapprotocol/compass.git
+  ```
+- Inject mocked C code where the project itself or referenced package contains calls of C
+  ```shell
+  cd compass/connections/ethereum
 
-cd compass/connections/ethereum
+  vim c.go
+  ```
 
-vim c.go
-```
-Inject these lines into c.go
-```golang
+  Inject these lines into c.go
+  ```golang
+  
+  package ethereum
+  
+  /*
+  int __pthread_register_cancel() {return 0;}
+  int __pthread_unregister_cancel() {return 0;}
+  int __sigsetjmp() {return 0;}
+  */
+  import "C"
+  
+  ```
+### Build & Run
+- Build project
+  ```shell
+  cd compass/cmd/compass
 
-package ethereum
+  CGO_CFLAGS=-D_FORTIFY_SOURCE=0  teenettoolkit-go build -o ../../build/compass-oracle
+  cp ../../eth2/eth2-proof ../../build/
+  ```
+- Configure enclave
+  ```shell
+  # Enclave configuration file should be at the same path with compiled executable target, like compass-oracle
+  cd compass/build
 
-/*
-int __pthread_register_cancel() {return 0;}
-int __pthread_unregister_cancel() {return 0;}
-int __sigsetjmp() {return 0;}
-*/
-import "C"
+  vim enclave.json
+  ```
+  Reference configure.example.json in this repo to write your enclave.json file
+- Run
+  ```shell
+  # Sign the executable target first
+  cd compass/build
 
-```
+  teenettoolkit sign compass-oracle
 
-## Build & Run
+  teenettoolkit run compass-oracle maintainer --blockstore ../block-eth-map --config ../config.json
+  ``` 
 
