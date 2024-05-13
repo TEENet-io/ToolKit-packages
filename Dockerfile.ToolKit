@@ -1,0 +1,16 @@
+FROM ubuntu:latest
+
+ENV TZ=Asia/Shanghai
+
+RUN apt update && apt install -y wget git && \
+    mkdir -p /etc/apt/keyrings && \
+    wget -qO- https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | tee /etc/apt/keyrings/intel-sgx-keyring.asc > /dev/null && \
+    echo "deb [signed-by=/etc/apt/keyrings/intel-sgx-keyring.asc arch=amd64] https://download.01.org/intel-sgx/sgx_repo/ubuntu jammy main" | tee /etc/apt/sources.list.d/intel-sgx.list && \
+    apt update && \
+    wget https://github.com/TEENet-io/ToolKit-packages/releases/download/v0.1.0-beta/test3.deb && \
+    apt install -y ./test3.deb build-essential libssl-dev
+
+RUN wget -qO- https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | tee /etc/apt/keyrings/intel-sgx-keyring.asc > /dev/null && \
+    echo "deb [signed-by=/etc/apt/keyrings/intel-sgx-keyring.asc arch=amd64] https://download.01.org/intel-sgx/sgx_repo/ubuntu jammy main" | tee /etc/apt/sources.list.d/intel-sgx.list && \
+    apt update && \
+    apt install -y --no-install-recommends libsgx-enclave-common
