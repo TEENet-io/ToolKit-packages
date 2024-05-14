@@ -1,14 +1,40 @@
 # ToolKit-packages
 
 ## Prerequisites
-Rent a cloud server that supports TEE hardware.   
+### Rent a cloud server that supports TEE hardware.   
 TEENet's ToolKit currently supports Intel SGX environment.  
-#### Alibaba Cloud  
-Only ***c7t / g7t / r7t*** instances support Intel SGX. For more information, check: https://help.aliyun.com/zh/ecs/user-guide/build-an-sgx-encrypted-computing-environment#53b0d34b7cnlu   
-#### IBM Cloud
-Only ***Balanced-bx3d*** and ***Compute-cx3d*** virtual servers support Intel SGX. For more information, check: https://cloud.ibm.com/docs/vpc?topic=vpc-about-sgx-vpc  
-#### Tencent Cloud
-Only ***M6ce*** instance supports Intel SGX. For more information, check: https://www.tencentcloud.com/zh/document/product/213/45510   
+- Alibaba Cloud  
+  ***c7t / g7t / r7t*** instances support Intel SGX. For more information, check: https://help.aliyun.com/zh/ecs/user-guide/build-an-sgx-encrypted-computing-environment#53b0d34b7cnlu
+- IBM Cloud
+  ***Balanced-bx3d*** and ***Compute-cx3d*** virtual servers support Intel SGX. For more information, check: https://cloud.ibm.com/docs/vpc?topic=vpc-about-sgx-vpc  
+- Tencent Cloud
+  ***M6ce*** instance supports Intel SGX. For more information, check: https://www.tencentcloud.com/zh/document/product/213/45510   
+### Check SGX hardware status
+Open terminal to check whether SGX is enabled or not:
+```shell
+sudo apt install cpuid
+
+cpuid | grep SGX
+```
+If SGX is enabled in BIOS, you may see output contains info like this:
+```shell
+    SGX: Software Guard Extensions supported = true
+    SGX_LC: SGX launch config supported      = true
+    SGX capability (0x12/0):
+      SGX1 supported                         = true
+```
+- SGX: Software Guard Extensions supported is true if the hardware supports it.
+- SGX_LC: SGX launch config supported is true if the hardware also supports FLC. This is required for attestation.
+- SGX1 supported is true if it's enabled in the BIOS.
+### Check driver
+```shell
+ls /dev/*sgx*
+```
+If your SGX environment is good to go, you may see output contains info like this:
+```shell
+/dev/sgx:
+enclave  provision
+```
 
 ## Install ToolKit
 ### Install via docker
