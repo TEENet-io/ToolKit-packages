@@ -8,7 +8,9 @@ TEENet's ToolKit currently supports Intel SGX environment.
 - IBM Cloud
   ***Balanced-bx3d*** and ***Compute-cx3d*** virtual servers support Intel SGX. For more information, check: https://cloud.ibm.com/docs/vpc?topic=vpc-about-sgx-vpc  
 - Tencent Cloud
-  ***M6ce*** instance supports Intel SGX. For more information, check: https://www.tencentcloud.com/zh/document/product/213/45510   
+  ***M6ce*** instance supports Intel SGX. For more information, check: https://www.tencentcloud.com/zh/document/product/213/45510
+- Microsoft Azure
+ ***DCsv2-series*** and ***DCsv3/DCdsv3-series*** support Intel SGX. For more information, check: https://learn.microsoft.com/en-us/azure/confidential-computing/quick-create-portal   
 ### Check SGX hardware status
 Open terminal to check whether SGX is enabled or not:
 ```shell
