@@ -48,7 +48,7 @@ enclave  provision
   ```shell
   cd ToolKit-packages
 
-  docker build -t teenet-toolkit:latest -f Dockerfile.TEENetToolKit .
+  docker build -t teenet-toolkit:latest -f Dockerfile.ToolKit .
   ```
 ## Build & Run Program inside TEE via TEENet ToolKit
 Take mapprotocol/compass as an example:   
