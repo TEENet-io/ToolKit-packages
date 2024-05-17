@@ -109,3 +109,44 @@ Take mapprotocol/compass as an example:
   teenettoolkit run ./build/compass-oracle maintainer --blockstore ./block-eth-map --config ./config.json --keystorePath ./key.json
   ``` 
 
+### Troubleshooting
+- Failed to sign executable with ```teenettoolkit sign```
+  ```shell
+  # Error may occur like following
+  
+  TEENetToolkit v0.1.0 (5869b4e11e4f0868275d2bf03803736bcc3a03da)
+  Generating new private.pem
+  ERROR: /opt/teenettoolkit/bin/teenettoolkit-oesign ERROR: oe_sgx_build_enclave(): result=OE_FAILURE (0x1)
+  2024-05-17T19:06:49+0800.946085Z [(H)ERROR] tid(0x7f6894761740) | symbol not found: __isoc23_strtoul [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:_link_elf_image:848]
+  2024-05-17T19:06:49+0800.954790Z [(H)ERROR] tid(0x7f6894761740) | symbol not found: __isoc23_fscanf [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:_link_elf_image:848]
+  2024-05-17T19:06:49+0800.957557Z [(H)ERROR] tid(0x7f6894761740) | symbol not found: __isoc23_sscanf [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:_link_elf_image:848]
+  2024-05-17T19:06:50+0800.029593Z [(H)ERROR] tid(0x7f6894761740) | symbol not found: __isoc23_strtol [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:_link_elf_image:848]
+  2024-05-17T19:06:50+0800.092817Z [(H)ERROR] tid(0x7f6894761740) | 4 symbols not found (oe_result_t=OE_UNSUPPORTED_ENCLAVE_IMAGE) [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:_link_elf_image:866]
+  2024-05-17T19:06:50+0800.092821Z [(H)ERROR] tid(0x7f6894761740) | :OE_UNSUPPORTED_ENCLAVE_IMAGE [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:_patch_relocations:1219]
+  2024-05-17T19:06:50+0800.092823Z [(H)ERROR] tid(0x7f6894761740) | :OE_UNSUPPORTED_ENCLAVE_IMAGE [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/loadelf.c:oe_load_elf_enclave_image:1550]
+  2024-05-17T19:06:50+0800.093861Z [(H)ERROR] tid(0x7f6894761740) | :OE_UNSUPPORTED_ENCLAVE_IMAGE [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/load.c:oe_load_enclave_image:66]
+  2024-05-17T19:06:50+0800.093864Z [(H)ERROR] tid(0x7f6894761740) | :OE_FAILURE [/ertbuild/3rdparty/openenclave/openenclave-src/host/sgx/create.c:oe_sgx_build_enclave:996]
+
+  ```
+
+  This is related to C/C++ function called by Golang, try to fix it by injecting those missing symbols in ```c.go```.
+
+  ```shell
+  # In c.go
+  package ethereum
+  
+  /*
+  int __pthread_register_cancel() {return 0;}
+  int __pthread_unregister_cancel() {return 0;}
+  int __sigsetjmp() {return 0;}
+  int __isoc23_strtoul() {return 0;}
+  int __isoc23_fscanf() {return 0;}
+  int __isoc23_sscanf() {return 0;}
+  int __isoc23_strtol() {return 0;}
+  */
+  import "C"
+
+  ```
+  
+### 
+  
