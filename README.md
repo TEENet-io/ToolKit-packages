@@ -97,17 +97,22 @@ Take mapprotocol/compass as an example:
   vim enclave.json
   ```
   Reference enclave.example.json in this repo to write your enclave.json file
-- Run
+- Run  
   ```shell
-  # Sign the executable target first
   cd compass/build
 
+  # Executable must be signed before they can be run in a SGX enclave.
+  # The purpose is to ensure the integrity and consistency of the program. 
+  # teenettoolkit sign <Executable> will generates a new key "private.pem" and search configuration "enclave.json" in the current directory and signs the executable.
   teenettoolkit sign compass-oracle
 
   cd ..
 
+  # You can configure your own config.json and key.json
   teenettoolkit run ./build/compass-oracle maintainer --blockstore ./block-eth-map --config ./config.json --keystorePath ./key.json
-  ``` 
+  ```
+- Re-Run。
+  If your server restarts or the code is updated, you can recompile the program and run it according to the above process.
 
 ### Troubleshooting
 - Failed to sign executable with ```teenettoolkit sign```
