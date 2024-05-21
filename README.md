@@ -111,7 +111,7 @@ Take mapprotocol/compass as an example:
   # You can configure your own config.json and key.json
   teenettoolkit run ./build/compass-oracle maintainer --blockstore ./block-eth-map --config ./config.json --keystorePath ./key.json
   ```
-- Re-Run。
+- Re-Run   
   If your server restarts or the code is updated, you can recompile the program and run it according to the above process.
 
 ### Troubleshooting
