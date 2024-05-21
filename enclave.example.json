@@ -1,28 +1,30 @@
 {
  "exe": "compass-oracle",
- "key": "private.pem",
+ "key": "private.pem", # The key to sign executable
  "debug": true,
- "heapSize": 1024,
- "executableHeap": false,
- "productID": 1234,
- "securityVersion": 2,
+ "heapSize": 1024, # The heapSize should be at least 512 MB, and usually, 8192 MB is enought for most programs. 
+ "executableHeap": false, # If executableHeap is true, the enclave heap will be executable. This is required if you use libraries that JIT-compile code.
+ "productID": 1234, # This is used by developers to differentiate products. It could be any numbers, like 1,2,3,4,...
+ "securityVersion": 2, # This is used by developers to distinguish different stages of the product. It could be any numbers, like 1,2,3,4,...
  "mounts": [
     {
-            "source": "/path/to/your/compass",
-            "target": "/compass",
+            # You need to mount files/dirs if your program read/write files.
+            "source": "/path/to/your/compass", # the path to your program in docker container
+            "target": "/compass", # the path to your program inside enclave
             "type": "hostfs",
             "readOnly": false
     }
  ],
  "env": [
     {
-            "name": "PWD",
+            "name": "PWD", # set the working directory inside enclave
             "value": "/compass"
     }
  ],
  "files": [
     {
-            "source": "/etc/ssl/certs/ca-certificates.crt",
+            # ssl certificate is needed if your program needs TLS connection with some services.
+            "source": "/etc/ssl/certs/ca-certificates.crt", 
             "target": "/etc/ssl/certs/ca-certificates.crt"
     }
  ]
