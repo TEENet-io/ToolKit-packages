@@ -5,6 +5,9 @@
 TEENet's ToolKit currently supports Intel SGX environment.  
 - Alibaba Cloud  
   ***c7t / g7t / r7t*** instances support Intel SGX. For more information, check: https://help.aliyun.com/zh/ecs/user-guide/build-an-sgx-encrypted-computing-environment#53b0d34b7cnlu
+  ***c7t***: Indonesia / Shenzhen, China / Shanghai, China / Hangzhou, China / Beijing, China  
+  ***g7t***: Indonesia / Singapore / HongKong, China / Shenzhen, China / Shanghai, China / Hangzhou, China / Beijing, China
+  ***r7t***: South Korea / Shenzhen, China / Shanghai, China / Hangzhou, China / Beijing, China    
 - IBM Cloud  
   ***Balanced-bx3d*** and ***Compute-cx3d*** virtual servers support Intel SGX. For more information, check: https://cloud.ibm.com/docs/vpc?topic=vpc-about-sgx-vpc  
 - Tencent Cloud  
