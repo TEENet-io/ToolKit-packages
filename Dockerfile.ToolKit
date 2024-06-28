@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 ENV TZ=Asia/Shanghai
 
-RUN apt update && apt install -y wget git vim && \
+RUN apt update && apt install -y wget git vim curl && \
     mkdir -p /etc/apt/keyrings && \
     wget -qO- https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | tee /etc/apt/keyrings/intel-sgx-keyring.asc > /dev/null && \
     echo "deb [signed-by=/etc/apt/keyrings/intel-sgx-keyring.asc arch=amd64] https://download.01.org/intel-sgx/sgx_repo/ubuntu jammy main" | tee /etc/apt/sources.list.d/intel-sgx.list && \
